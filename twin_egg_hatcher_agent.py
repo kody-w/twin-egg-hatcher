@@ -66,6 +66,30 @@ Environment overrides
 
 from __future__ import annotations
 
+
+# ═══════════════════════════════════════════════════════════════════════════
+# RAPP AGENT MANIFEST — extracted by kody-w/RAR's build_registry.py via AST.
+# ═══════════════════════════════════════════════════════════════════════════
+__manifest__ = {
+    "schema": "rapp-agent/1.0",
+    "name": "@kody/twin_egg_hatcher",
+    "version": "1.0.0",
+    "display_name": "HatchTwinEgg",
+    "description": (
+        "Generic single-file hatcher for any RAPP digital-organism twin. "
+        "Loads identity from cwd auto-detect, --source REPO (raw GitHub), "
+        "or --egg PATH (zip), then materializes ~/.rapp/twins/<hash>/. The "
+        "global brainstem's built-in Twin agent boots/chats with it immediately."
+    ),
+    "author": "Kody Wildfeuer",
+    "tags": ["twin", "egg", "hatcher", "organism", "federation", "single-file", "rapp"],
+    "category": "core",
+    "quality_tier": "community",
+    "requires_env": [],
+    "dependencies": ["@rapp/basic_agent"],
+}
+
+
 import argparse
 import io
 import json
