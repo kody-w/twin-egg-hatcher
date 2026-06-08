@@ -197,7 +197,12 @@ def _name_from_namespace(ns: str) -> Optional[str]:
 
 
 def _name_from_rappid(rappid: str) -> Optional[str]:
-    """Extract the slug from `rappid:v2:KIND:@owner/slug:HASH@...`."""
+    """Extract the slug from a rappid.  Accepts the consolidated Eternity form
+    `rappid:@owner/slug:HASH` and the legacy `rappid:v2:KIND:@owner/slug:HASH@...`
+    (read forever, per Constitution Art. XXXIV.1)."""
+    m = re.match(r"^rappid:@[^/]+/([^:]+):[a-f0-9]+$", rappid)
+    if m:
+        return m.group(1)
     m = re.match(r"^rappid:v\d+:[^:]+:@[^/]+/([^:]+):", rappid)
     return m.group(1) if m else None
 
@@ -215,10 +220,16 @@ def _resolve_name(rj: Dict[str, Any]) -> str:
 
 
 def _hash_from_rappid(rappid: str) -> str:
-    """Workspace dirname for a rappid.  Handles both:
+    """Workspace dirname for a rappid.  Handles, in order:
+      - consolidated Eternity rappids (`rappid:@owner/slug:HEX`, hash is the tail)
       - v2 rappids (`rappid:v2:...:HEX32@...`)
-      - bare-UUID rappids (legacy v1.x front doors like Heimdall)."""
+      - bare-UUID rappids (legacy v1.x front doors like Heimdall).
+    The hash is the identity / join key (Constitution Art. XXXIV.1); it is
+    preserved verbatim and never regenerated."""
     if rappid.startswith("rappid:"):
+        m = re.match(r"^rappid:@[^/]+/[^:]+:([a-f0-9]+)$", rappid)
+        if m:
+            return m.group(1)
         m = re.search(r":([a-f0-9]{32})@", rappid)
         if m:
             return m.group(1)
