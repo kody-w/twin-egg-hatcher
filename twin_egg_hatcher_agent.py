@@ -638,7 +638,7 @@ def _hatch_neighborhood_egg(egg_path: Path, manifest: Dict[str, Any]) -> Dict[st
     )
     (n_dir / "rappid.json").write_text(
         json.dumps({
-            "schema":  "rapp-rappid/2.0",
+            "schema":  "rapp/1",
             "rappid":  manifest.get("rappid"),
             "hash":    n_hash,
             "kind":    "neighborhood",
